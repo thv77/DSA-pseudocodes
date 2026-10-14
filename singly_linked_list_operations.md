@@ -1,214 +1,144 @@
-# Algorithm: Singly Linked List Operations
+# Algorithm: Single Linked List – Menu Driven
 
-## Main Program
+## Main Algorithm
 
-```text
-START
+**Step 1:** Start.
 
-REPEAT
-    Display "1. Insert at first"
-    Display "2. Insert at last"
-    Display "3. Insert after a key"
-    Display "4. Delete from the front"
-    Display "5. Delete from the end"
-    Display "6. Delete a key"
-    Display "7. Display"
-    Display "8. Exit"
+**Step 2:** Initialize `head = NULL`.
 
-    Read N
+**Step 3:** Display the menu:
 
-    SWITCH N
-        CASE 1:
-            CALL insertFirst()
-        CASE 2:
-            CALL insertLast()
-        CASE 3:
-            CALL insertKey()
-        CASE 4:
-            CALL deleteFirst()
-        CASE 5:
-            CALL deleteLast()
-        CASE 6:
-            CALL deleteKey()
-        CASE 7:
-            CALL display()
-        CASE 8:
-            Display "Have a nice day"
-            EXIT
-        DEFAULT:
-            Display "Invalid operation"
-    END SWITCH
-UNTIL N = 8
+1. Insert at first
+2. Insert at last
+3. Insert after a key
+4. Delete from front
+5. Delete from end
+6. Delete a key
+7. Display
+8. Exit
 
-STOP
-```
+**Step 4:** Read the user's choice.
 
-## 1. Insert at First — insertFirst()
+**Step 5:** Perform the selected operation using the corresponding algorithm below.
 
-```text
-START
-Allocate memory for TEMP
+**Step 6:** Repeat Steps 3–5 until the user chooses Exit.
 
-IF TEMP = NULL THEN
-    Display "Memory underflow"
-ELSE
-    Read ITEM
-    TEMP.DATA = ITEM
-    TEMP.LINK = HEAD
-    HEAD = TEMP
-END IF
+**Step 7:** Stop.
 
-CALL display()
-STOP
-```
+---
 
-## 2. Insert at Last — insertLast()
+## Case 1 – Insert at First
 
-```text
-START
-Allocate memory for TEMP
+**Step 1:** Create a new node.
 
-IF TEMP = NULL THEN
-    Display "Memory underflow"
-    EXIT
-END IF
+**Step 2:** If memory allocation fails, display "Memory underflow" and stop this operation.
 
-Read ITEM
+**Step 3:** Read the element.
 
-IF HEAD = NULL THEN
-    TEMP.DATA = ITEM
-    TEMP.LINK = HEAD
-    HEAD = TEMP
-ELSE
-    PTR = HEAD
-    WHILE PTR.LINK != NULL DO
-        PTR = PTR.LINK
-    END WHILE
+**Step 4:** Store the element in the new node.
 
-    PTR.LINK = TEMP
-    TEMP.DATA = ITEM
-    TEMP.LINK = NULL
-END IF
+**Step 5:** Link the new node to `head`.
 
-CALL display()
-STOP
-```
+**Step 6:** Update `head` to the new node.
 
-## 3. Insert After a Key — insertKey()
+**Step 7:** Display the list.
 
-```text
-START
-Allocate memory for TEMP
+---
 
-IF TEMP = NULL THEN
-    Display "Memory underflow"
-    EXIT
-END IF
+## Case 2 – Insert at Last
 
-Read ITEM
-Read KEY
-PTR = HEAD
+**Step 1:** Create a new node.
 
-WHILE PTR.DATA != KEY AND PTR.LINK != NULL DO
-    PTR = PTR.LINK
-END WHILE
+**Step 2:** If memory allocation fails, display "Memory underflow" and stop this operation.
 
-IF PTR.LINK = NULL THEN
-    Display "Search fails"
-ELSE
-    TEMP.DATA = ITEM
-    TEMP.LINK = PTR.LINK
-    PTR.LINK = TEMP
-END IF
+**Step 3:** Read the element and store it in the new node.
 
-CALL display()
-STOP
-```
+**Step 4:** If the list is empty, set the new node as `head`.
 
-## 4. Delete from the Front — deleteFirst()
+**Step 5:** Otherwise, traverse the list until the last node is reached.
 
-```text
-START
-IF HEAD = NULL THEN
-    Display "The list is empty"
-    EXIT
-END IF
+**Step 6:** Link the last node to the new node and set the new node's link to `NULL`.
 
-Display HEAD.DATA, "is deleted"
-PREV = HEAD
-HEAD = HEAD.LINK
-Free PREV
+**Step 7:** Display the list.
 
-CALL display()
-STOP
-```
+---
 
-## 5. Delete from the End — deleteLast()
+## Case 3 – Insert After a Key
 
-```text
-START
-IF HEAD = NULL THEN
-    Display "The list is empty"
-    EXIT
-END IF
+**Step 1:** Create a new node.
 
-PREV = HEAD
-CURRENT = HEAD
+**Step 2:** If memory allocation fails, display "Memory underflow" and stop this operation.
 
-WHILE CURRENT.LINK != NULL DO
-    PREV = CURRENT
-    CURRENT = CURRENT.LINK
-END WHILE
+**Step 3:** Read the element and the key.
 
-PREV.LINK = NULL
-Display CURRENT.DATA, "is deleted"
-Free CURRENT
+**Step 4:** Search for the key in the list.
 
-CALL display()
-STOP
-```
+**Step 5:** If the key is found, link the new node after that node.
 
-## 6. Delete a Key — deleteKey()
+**Step 6:** Otherwise, display "Search fails".
 
-```text
-START
-IF HEAD = NULL THEN
-    Display "The list is empty"
-    EXIT
-END IF
+**Step 7:** Display the list.
 
-Read KEY
-PREV = HEAD
-CURRENT = HEAD
+---
 
-WHILE CURRENT.DATA != KEY AND CURRENT.LINK != NULL DO
-    PREV = CURRENT
-    CURRENT = CURRENT.LINK
-END WHILE
+## Case 4 – Delete from Front
 
-IF CURRENT.LINK = NULL THEN
-    Display "Search fails"
-ELSE
-    Display CURRENT.DATA, "is deleted"
-    PREV.LINK = CURRENT.LINK
-END IF
+**Step 1:** If the list is empty, display "The list is empty" and stop this operation.
 
-CALL display()
-STOP
-```
+**Step 2:** Store `head` in a temporary pointer.
 
-## 7. Display — display()
+**Step 3:** Move `head` to the next node.
 
-```text
-START
-IF HEAD = NULL THEN
-    Display "the list is empty"
-ELSE
-    PTR = HEAD
-    WHILE PTR != NULL DO
-        Display PTR.DATA
-        PTR = PTR.LINK
-    END WHILE
-END IF
-STOP
-```
+**Step 4:** Free the old head node.
+
+**Step 5:** Display the list.
+
+---
+
+## Case 5 – Delete from End
+
+**Step 1:** If the list is empty, display "The list is empty" and stop this operation.
+
+**Step 2:** Set the previous and current pointers to the head node.
+
+**Step 3:** Traverse to the last node while keeping track of the previous node.
+
+**Step 4:** Set the previous node's link to `NULL`.
+
+**Step 5:** Free the last node.
+
+**Step 6:** Display the list.
+
+---
+
+## Case 6 – Delete a Key
+
+**Step 1:** If the list is empty, display "The list is empty" and stop this operation.
+
+**Step 2:** Read the key to be deleted.
+
+**Step 3:** Search for the key while maintaining previous and current pointers.
+
+**Step 4:** If the key is found, unlink the node from the list and free it.
+
+**Step 5:** Otherwise, display "Search fails".
+
+**Step 6:** Display the list.
+
+---
+
+## Case 7 – Display
+
+**Step 1:** If the list is empty, display "The list is empty".
+
+**Step 2:** Otherwise, set a pointer to `head`.
+
+**Step 3:** Traverse from `head` to `NULL`, displaying each node's data.
+
+---
+
+## Case 8 – Exit
+
+**Step 1:** Display "Have a nice day".
+
+**Step 2:** Terminate the program.
