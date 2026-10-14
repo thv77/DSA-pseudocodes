@@ -2,7 +2,7 @@
 
 **Step 1:** Start.
 
-**Step 2:** Initialize `rear = -1`, `front = 0), and create a queue array of size 3.
+**Step 2:** Initialize `rear = -1`, `front = 0`, and create a queue array of size 3.
 
 **Step 3:** Display the menu:
 1. Enqueue (insert an element)
