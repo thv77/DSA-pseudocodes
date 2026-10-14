@@ -22,7 +22,7 @@
 **Step 6: If choice = 2 (Pop)**
 - Check whether `top == -1`.
 - If true, display **"Stack Underflow"**.
-- Otherwise, store `stack[top]` in `data`, decrement `top) by 1, and display a successful deletion message.
+- Otherwise, store `stack[top]` in `data`, decrement `top` by 1, and display a successful deletion message.
 - Return to the menu.
 
 **Step 7: If choice = 3 (Display)**
