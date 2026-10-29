@@ -5,7 +5,7 @@
 1. START
 2. Read the number of elements, `n`.
 3. Read `n` elements into array `A`.
-4. Repeat for each pass `j) from 1 to `n - 1`:
+4. Repeat for each pass `j` from 1 to `n - 1`:
    - Compare adjacent elements from index 0 to `n - j - 1`.
    - If `A[i] > A[i + 1]`, swap the two elements.
 5. Output the sorted array in ascending order.
