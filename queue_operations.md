@@ -1,39 +1,54 @@
-# Algorithm: Queue Operations Using Array
+# Pseudocode: Linear Queue Operations Using an Array
 
-**Step 1:** Start.
+A linear queue follows **FIFO** (First In, First Out). Initialize front ← 0, rear ← -1, and use an array of capacity MAX.
 
-**Step 2:** Initialize `rear = -1`, `front = 0`, and create a queue array of size 3.
+## ENQUEUE
 
-**Step 3:** Display the menu:
-1. Enqueue (insert an element)
-2. Dequeue (delete an element)
-3. Display elements
-4. Exit
+~~~text
+ALGORITHM Enqueue(queue, front, rear, MAX, item)
+    IF rear = MAX - 1 THEN
+        OUTPUT "Queue Overflow"
+        RETURN (front, rear)
+    END IF
+    rear ← rear + 1
+    queue[rear] ← item
+    RETURN (front, rear)
+END ALGORITHM
+~~~
 
-**Step 4:** Read the choice.
+## DEQUEUE
 
-**Step 5: If choice = 1 (Enqueue)**
-- Read the element.
-- Check whether `rear == maxsize - 1`.
-- If true, display **"Queue Overflow"**.
-- Otherwise, increment `rear` and insert the element into `queue[rear]`.
-- Return to the menu.
+~~~text
+ALGORITHM Dequeue(queue, front, rear)
+    IF front > rear THEN
+        OUTPUT "Queue Underflow"
+        RETURN (front, rear, EMPTY)
+    END IF
+    item ← queue[front]
+    front ← front + 1
 
-**Step 6: If choice = 2 (Dequeue)**
-- Check whether `rear == -1 && front == 0`.
-- If true, display **"Queue Underflow"**.
-- Otherwise, store `queue[front]` in `data`, increment `front`, and display **"One element is successfully deleted"**.
-- Return to the menu.
+    IF front > rear THEN
+        front ← 0
+        rear ← -1
+    END IF
+    RETURN (front, rear, item)
+END ALGORITHM
+~~~
 
-**Step 7: If choice = 3 (Display)**
-- Start from `front`.
-- Traverse up to `rear` and display each element.
-- Return to the menu.
+## DISPLAY
 
-**Step 8: If choice = 4 (Exit)**
-- Display **"Have a nice day"**.
-- Terminate the program.
+~~~text
+ALGORITHM DisplayQueue(queue, front, rear)
+    IF rear = -1 THEN
+        OUTPUT "Queue is empty"
+        RETURN
+    END IF
+    FOR i ← front TO rear
+        OUTPUT queue[i]
+    END FOR
+END ALGORITHM
+~~~
 
-**Step 9:** For any other choice, display **"Wrong choice"**.
+A linear queue may leave unused positions at the beginning after deletions; a circular queue reuses those positions.
 
-**Step 10:** Stop.
+**Time:** Enqueue O(1), Dequeue O(1), Display O(n).
