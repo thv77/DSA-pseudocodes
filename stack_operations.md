@@ -1,39 +1,47 @@
-# Algorithm: Stack Operations Using Array
+# Pseudocode: Stack Operations Using an Array
 
-**Step 1:** Start.
+A stack follows **LIFO** (Last In, First Out). Initialize top ← -1 for an array of capacity MAX.
 
-**Step 2:** Initialize `top = -1` and create an array `stack` of size 5.
+## PUSH
 
-**Step 3:** Display the menu:
-1. Push (insert an element)
-2. Pop (delete an element)
-3. Display elements
-4. Exit
+~~~text
+ALGORITHM Push(stack, top, MAX, item)
+    IF top = MAX - 1 THEN
+        OUTPUT "Stack Overflow"
+        RETURN top
+    END IF
+    top ← top + 1
+    stack[top] ← item
+    RETURN top
+END ALGORITHM
+~~~
 
-**Step 4:** Read the user's choice.
+## POP
 
-**Step 5: If choice = 1 (Push)**
-- Read the element.
-- Check whether `top == maxsize - 1`.
-- If true, display **"Stack Overflow"**.
-- Otherwise, increment `top` by 1 and insert the element at `stack[top]`.
-- Return to the menu.
+~~~text
+ALGORITHM Pop(stack, top)
+    IF top = -1 THEN
+        OUTPUT "Stack Underflow"
+        RETURN (top, EMPTY)
+    END IF
+    item ← stack[top]
+    top ← top - 1
+    RETURN (top, item)
+END ALGORITHM
+~~~
 
-**Step 6: If choice = 2 (Pop)**
-- Check whether `top == -1`.
-- If true, display **"Stack Underflow"**.
-- Otherwise, store `stack[top]` in `data`, decrement `top` by 1, and display a successful deletion message.
-- Return to the menu.
+## DISPLAY
 
-**Step 7: If choice = 3 (Display)**
-- Start from `top`.
-- Print the elements one by one down to index 0.
-- Return to the menu.
+~~~text
+ALGORITHM DisplayStack(stack, top)
+    IF top = -1 THEN
+        OUTPUT "Stack is empty"
+        RETURN
+    END IF
+    FOR i ← top DOWNTO 0
+        OUTPUT stack[i]
+    END FOR
+END ALGORITHM
+~~~
 
-**Step 8: If choice = 4 (Exit)**
-- Display **"Have a nice day"**.
-- Terminate the program.
-
-**Step 9:** If any other choice is entered, display **"Wrong choice"** and return to the menu.
-
-**Step 10:** Stop.
+**Time:** Push O(1), Pop O(1), Display O(n). **Space:** O(MAX).
