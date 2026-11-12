@@ -18,7 +18,7 @@ A beginner-friendly collection of **language-independent pseudocode** for the Da
 | 10 | Postfix Expression Evaluation | [postfix_evaluation.md](postfix_evaluation.md) |
 | 11 | Singly Linked List Operations | [singly_linked_list_operations.md](singly_linked_list_operations.md) |
 | 12 | Doubly Linked List Operations | [doubly_linked_list.md](doubly_linked_list.md) |
-| 13 | Binary Search Tree | [binary_search_tree.md](binary_search_tree.md) |
+| 13 | Binary Search | [binary_search.md](binary_search.md) |
 | 14 | Breadth-First Search (BFS) | [breadth_first_search.md](breadth_first_search.md) |
 | 15 | Depth-First Search (DFS) | [depth_first_search.md](depth_first_search.md) |
 | 16 | Selection Sort | [selection_sort.md](selection_sort.md) |
