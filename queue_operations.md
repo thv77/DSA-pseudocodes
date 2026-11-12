@@ -1,57 +1,79 @@
-# Pseudocode: Linear Queue Operations Using an Array
+# Pseudocode: Queue Operations Using an Array
 
-A linear queue follows **FIFO** (First In, First Out). Initialize front ← 0, rear ← -1, and use an array of capacity MAX.
+The program keeps an array `queue` of capacity maxsize (3) with `front ← -1` and `rear ← -1`. Insertions move `rear` forward with the modulo operator, so freed positions are reused. A menu is repeated until the user chooses EXIT.
+
+## MAIN MENU
+
+~~~text
+ALGORITHM QueueMenu
+    front ← -1
+    rear ← -1
+    REPEAT
+        OUTPUT "1.ENTER  2.DELETE  3.DISPLAY  4.EXIT"
+        READ n
+
+        IF n = 1 THEN
+            CALL Enqueue
+        ELSE IF n = 2 THEN
+            CALL Dequeue
+        ELSE IF n = 3 THEN
+            CALL Display
+        ELSE IF n = 4 THEN
+            EXIT PROGRAM
+        ELSE
+            OUTPUT "Invalid choice"
+        END IF
+    UNTIL n = 4
+END ALGORITHM
+~~~
 
 ## ENQUEUE
 
 ~~~text
-ALGORITHM Enqueue(queue, front, rear, MAX, item)
-    IF rear = MAX - 1 THEN
-        OUTPUT "Queue Overflow"
-        RETURN (front, rear)
+ALGORITHM Enqueue
+    READ item
+    IF front = (rear + 1) MOD maxsize THEN
+        OUTPUT "queue overflow"
+    ELSE IF front = -1 AND rear = -1 THEN
+        front ← 0
+        rear ← 0
+        queue[rear] ← item
+    ELSE
+        rear ← (rear + 1) MOD maxsize
+        queue[rear] ← item
     END IF
-    rear ← rear + 1
-    queue[rear] ← item
-    RETURN (front, rear)
 END ALGORITHM
 ~~~
 
 ## DEQUEUE
 
 ~~~text
-ALGORITHM Dequeue(queue, front, rear)
-    IF front > rear THEN
-        OUTPUT "Queue Underflow"
-        RETURN (front, rear, EMPTY)
-    END IF
-    item ← queue[front]
-    front ← front + 1
-
-    IF front > rear THEN
-        front ← 0
+ALGORITHM Dequeue
+    IF rear = -1 AND front = -1 THEN
+        OUTPUT "queue underflow"
+    ELSE IF rear = front THEN
+        data ← queue[front]
+        front ← -1
         rear ← -1
+    ELSE
+        data ← queue[front]
+        front ← (front + 1) MOD maxsize
+        OUTPUT "one element is successfully deleted"
     END IF
-    RETURN (front, rear, item)
 END ALGORITHM
 ~~~
 
 ## DISPLAY
 
 ~~~text
-ALGORITHM DisplayQueue(queue, front, rear)
-    IF rear = -1 THEN
-        OUTPUT "Queue is empty"
-        RETURN
-    END IF
+ALGORITHM Display
     FOR i ← front TO rear
         OUTPUT queue[i]
     END FOR
 END ALGORITHM
 ~~~
 
-A linear queue may leave unused positions at the beginning after deletions; a circular queue reuses those positions.
-
-**Time:** Enqueue O(1), Dequeue O(1), Display O(n).
+**Time:** Enqueue O(1), Dequeue O(1), Display O(n). **Space:** O(maxsize).
 
 ## C implementation
 

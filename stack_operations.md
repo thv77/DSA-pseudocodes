@@ -1,46 +1,72 @@
 # Pseudocode: Stack Operations Using an Array
 
-A stack follows **LIFO** (Last In, First Out). Initialize top ← -1 for an array of capacity MAX.
+A stack follows **LIFO** (Last In, First Out). The program keeps an array `stack` of capacity MAX (5) and `top ← -1`, and repeats a menu until the user chooses EXIT.
+
+## MAIN MENU
+
+~~~text
+ALGORITHM StackMenu
+    top ← -1
+    LOOP
+        OUTPUT "1.PUSH  2.POP  3.DISPLAY  4.EXIT"
+        READ choice
+
+        IF choice = 1 THEN
+            CALL Push
+        ELSE IF choice = 2 THEN
+            CALL Pop
+        ELSE IF choice = 3 THEN
+            CALL DisplayStack
+        ELSE IF choice = 4 THEN
+            EXIT LOOP
+        ELSE
+            OUTPUT "Invalid Choice"
+        END IF
+    END LOOP
+END ALGORITHM
+~~~
 
 ## PUSH
 
 ~~~text
-ALGORITHM Push(stack, top, MAX, item)
+ALGORITHM Push
     IF top = MAX - 1 THEN
-        OUTPUT "Stack Overflow"
-        RETURN top
+        OUTPUT "Stack overflow"
+    ELSE
+        READ item
+        top ← top + 1
+        stack[top] ← item
+        OUTPUT "The element", item, "pushed into the stack"
     END IF
-    top ← top + 1
-    stack[top] ← item
-    RETURN top
 END ALGORITHM
 ~~~
 
 ## POP
 
 ~~~text
-ALGORITHM Pop(stack, top)
+ALGORITHM Pop
     IF top = -1 THEN
         OUTPUT "Stack Underflow"
-        RETURN (top, EMPTY)
+    ELSE
+        item ← stack[top]
+        top ← top - 1
+        OUTPUT "The element", item, "popped from the stack"
     END IF
-    item ← stack[top]
-    top ← top - 1
-    RETURN (top, item)
 END ALGORITHM
 ~~~
 
 ## DISPLAY
 
 ~~~text
-ALGORITHM DisplayStack(stack, top)
+ALGORITHM DisplayStack
     IF top = -1 THEN
         OUTPUT "Stack is empty"
-        RETURN
+    ELSE
+        OUTPUT "The stack elements are:"
+        FOR i ← top DOWNTO 0
+            OUTPUT stack[i]
+        END FOR
     END IF
-    FOR i ← top DOWNTO 0
-        OUTPUT stack[i]
-    END FOR
 END ALGORITHM
 ~~~
 

@@ -3,20 +3,28 @@
 Selection sort repeatedly finds the smallest element in the unsorted section and swaps it into the next position.
 
 ~~~text
-ALGORITHM SelectionSort(A, n)
-    FOR i ← 0 TO n - 2
-        minIndex ← i
+ALGORITHM SelectionSort
+    READ n
+    READ a[0 ... n - 1]
+
+    FOR i ← 0 TO n - 1
+        min ← a[i]
+        loc ← i
+
         FOR j ← i + 1 TO n - 1
-            IF A[j] < A[minIndex] THEN
-                minIndex ← j
+            IF a[j] < min THEN
+                min ← a[j]
+                loc ← j
             END IF
         END FOR
-        IF minIndex ≠ i THEN
-            SWAP A[i] WITH A[minIndex]
-        END IF
+
+        temp ← a[i]
+        a[i] ← min
+        a[loc] ← temp
     END FOR
-    OUTPUT A
-    RETURN A
+
+    OUTPUT "The sorted array is:"
+    OUTPUT a[0 ... n - 1]
 END ALGORITHM
 ~~~
 

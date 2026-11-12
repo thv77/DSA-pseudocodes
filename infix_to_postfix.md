@@ -1,46 +1,60 @@
 # Pseudocode: Infix to Postfix Conversion
 
-Use a stack for operators and parentheses. Assume single-character operands and operators +, -, *, /, and ^. Precedence: ^ above * and / above + and -. Exponentiation is right-associative.
+Uses a character stack for operators and parentheses. Operands are single letters or digits. Operator priority: `^` = 3, `*` and `/` = 2, `+` and `-` = 1, anything else (including `(`) = 0.
+
+## HELPER: PRIORITY
 
 ~~~text
-ALGORITHM InfixToPostfix(expression)
-    CREATE empty stack S
-    postfix ← empty sequence
+ALGORITHM Priority(ch)
+    IF ch = '^' THEN
+        RETURN 3
+    ELSE IF ch = '*' OR ch = '/' THEN
+        RETURN 2
+    ELSE IF ch = '+' OR ch = '-' THEN
+        RETURN 1
+    ELSE
+        RETURN 0
+    END IF
+END ALGORITHM
+~~~
 
-    FOR each token x from left to right
-        IF x is an operand THEN
-            APPEND x TO postfix
-        ELSE IF x = '(' THEN
-            PUSH x ONTO S
-        ELSE IF x = ')' THEN
-            WHILE S is not empty AND TOP(S) ≠ '('
-                APPEND POP(S) TO postfix
+## MAIN ALGORITHM
+
+~~~text
+ALGORITHM InfixToPostfix
+    top ← -1
+    j ← 0
+    READ infix
+
+    FOR i ← 0 TO LENGTH(infix) - 1
+        ch ← infix[i]
+
+        IF ch is a letter or digit THEN
+            postfix[j] ← ch
+            j ← j + 1
+        ELSE IF ch = '(' THEN
+            PUSH(ch)
+        ELSE IF ch = ')' THEN
+            WHILE stack[top] ≠ '('
+                postfix[j] ← POP()
+                j ← j + 1
             END WHILE
-            IF S is empty THEN
-                OUTPUT "Mismatched parentheses"
-                RETURN ERROR
-            END IF
-            POP(S)
-        ELSE IF x is an operator THEN
-            WHILE S is not empty AND TOP(S) is an operator AND
-                  (precedence(TOP(S)) > precedence(x) OR
-                  (precedence(TOP(S)) = precedence(x) AND x ≠ '^'))
-                APPEND POP(S) TO postfix
+            POP()                              // discard '('
+        ELSE                                   // operator
+            WHILE top ≠ -1 AND Priority(stack[top]) ≥ Priority(ch)
+                postfix[j] ← POP()
+                j ← j + 1
             END WHILE
-            PUSH x ONTO S
+            PUSH(ch)
         END IF
     END FOR
 
-    WHILE S is not empty
-        IF TOP(S) = '(' THEN
-            OUTPUT "Mismatched parentheses"
-            RETURN ERROR
-        END IF
-        APPEND POP(S) TO postfix
+    WHILE top ≠ -1                             // pop remaining operators
+        postfix[j] ← POP()
+        j ← j + 1
     END WHILE
 
-    OUTPUT postfix
-    RETURN postfix
+    OUTPUT "Postfix expression:", postfix
 END ALGORITHM
 ~~~
 

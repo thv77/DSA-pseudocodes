@@ -1,108 +1,256 @@
 # Pseudocode: Doubly Linked List Operations
 
-Each node stores data, prev, and next. Initialize head ← NULL.
+Each node stores `data`, a left link `llink` (previous node) and a right link `rlink` (next node). The list starts empty (`head ← NULL`). A menu is repeated until the user chooses Exit, and the list is displayed after every insertion or deletion.
+
+## MAIN MENU
+
+~~~text
+ALGORITHM DoublyLinkedListMenu
+    head ← NULL
+    OUTPUT "1.Insert at first  2.Insert at last  3.Insert after a key"
+    OUTPUT "4.Delete from the front  5.Delete from the end  6.Delete a key"
+    OUTPUT "7.Display forward  8.Display reverse  9.Exit"
+
+    REPEAT
+        READ n
+        IF input is not a number THEN
+            OUTPUT "Invalid input"
+            STOP
+        END IF
+
+        IF n = 1 THEN CALL InsertFirst
+        ELSE IF n = 2 THEN CALL InsertLast
+        ELSE IF n = 3 THEN CALL InsertKey
+        ELSE IF n = 4 THEN CALL DeleteFirst
+        ELSE IF n = 5 THEN CALL DeleteLast
+        ELSE IF n = 6 THEN CALL DeleteKey
+        ELSE IF n = 7 THEN CALL Display
+        ELSE IF n = 8 THEN CALL Display1
+        ELSE IF n = 9 THEN OUTPUT "Have a nice day!"
+        ELSE OUTPUT "Invalid operation"
+        END IF
+    UNTIL n = 9
+END ALGORITHM
+~~~
 
 ## INSERT AT BEGINNING
 
 ~~~text
-ALGORITHM InsertFront(head, value)
-    node ← CREATE_NODE(value)
-    IF node = NULL THEN
-        OUTPUT "Allocation failed"
-        RETURN head
+ALGORITHM InsertFirst
+    temp ← CREATE_NODE
+    IF temp = NULL THEN
+        OUTPUT "Memory allocation failed"
+        RETURN
     END IF
-    node.prev ← NULL
-    node.next ← head
+
+    READ item
+    temp.data ← item
+    temp.llink ← NULL
+    temp.rlink ← head
     IF head ≠ NULL THEN
-        head.prev ← node
+        head.llink ← temp
     END IF
-    head ← node
-    RETURN head
+    head ← temp
+
+    OUTPUT "The current status is:"
+    CALL Display
 END ALGORITHM
 ~~~
 
 ## INSERT AT END
 
 ~~~text
-ALGORITHM InsertEnd(head, value)
-    node ← CREATE_NODE(value)
-    IF node = NULL THEN
-        OUTPUT "Allocation failed"
-        RETURN head
-    END IF
-    node.next ← NULL
-    IF head = NULL THEN
-        node.prev ← NULL
-        RETURN node
+ALGORITHM InsertLast
+    temp ← CREATE_NODE
+    IF temp = NULL THEN
+        OUTPUT "Memory allocation failed"
+        RETURN
     END IF
 
-    current ← head
-    WHILE current.next ≠ NULL
-        current ← current.next
-    END WHILE
-    current.next ← node
-    node.prev ← current
-    RETURN head
+    READ item
+    temp.data ← item
+    temp.rlink ← NULL
+
+    IF head = NULL THEN
+        temp.llink ← NULL
+        head ← temp
+    ELSE
+        ptr ← head
+        WHILE ptr.rlink ≠ NULL
+            ptr ← ptr.rlink
+        END WHILE
+        temp.llink ← ptr
+        ptr.rlink ← temp
+    END IF
+
+    OUTPUT "The current status is:"
+    CALL Display
 END ALGORITHM
 ~~~
 
-## DELETE BY VALUE
+## INSERT AFTER A KEY
 
 ~~~text
-ALGORITHM DeleteValue(head, key)
-    current ← head
-    WHILE current ≠ NULL AND current.data ≠ key
-        current ← current.next
-    END WHILE
-    IF current = NULL THEN
-        OUTPUT "Value not found"
-        RETURN head
+ALGORITHM InsertKey
+    IF head = NULL THEN
+        OUTPUT "List is empty"
+        RETURN
     END IF
 
-    IF current.prev ≠ NULL THEN
-        current.prev.next ← current.next
+    READ item
+    READ key
+
+    ptr ← head
+    WHILE ptr ≠ NULL AND ptr.data ≠ key
+        ptr ← ptr.rlink
+    END WHILE
+    IF ptr = NULL THEN
+        OUTPUT "Search fails: key not found"
+        RETURN
+    END IF
+
+    temp ← CREATE_NODE
+    IF temp = NULL THEN
+        OUTPUT "Memory allocation failed"
+        RETURN
+    END IF
+
+    temp.data ← item
+    temp.rlink ← ptr.rlink
+    temp.llink ← ptr
+    IF ptr.rlink ≠ NULL THEN
+        ptr.rlink.llink ← temp
+    END IF
+    ptr.rlink ← temp
+
+    OUTPUT "The current status is:"
+    CALL Display
+END ALGORITHM
+~~~
+
+## DELETE FROM BEGINNING
+
+~~~text
+ALGORITHM DeleteFirst
+    IF head = NULL THEN
+        OUTPUT "List is empty"
+        RETURN
+    END IF
+
+    ptr ← head
+    OUTPUT ptr.data, "is deleted"
+    head ← head.rlink
+    IF head ≠ NULL THEN
+        head.llink ← NULL
+    END IF
+    FREE ptr
+
+    OUTPUT "The current status is:"
+    CALL Display
+END ALGORITHM
+~~~
+
+## DELETE FROM END
+
+~~~text
+ALGORITHM DeleteLast
+    IF head = NULL THEN
+        OUTPUT "List is empty"
+        RETURN
+    END IF
+
+    ptr ← head
+    WHILE ptr.rlink ≠ NULL
+        ptr ← ptr.rlink
+    END WHILE
+
+    OUTPUT ptr.data, "is deleted"
+    IF ptr.llink ≠ NULL THEN
+        ptr.llink.rlink ← NULL
     ELSE
-        head ← current.next
+        head ← NULL
     END IF
-    IF current.next ≠ NULL THEN
-        current.next.prev ← current.prev
+    FREE ptr
+
+    OUTPUT "The current status is:"
+    CALL Display
+END ALGORITHM
+~~~
+
+## DELETE A KEY
+
+~~~text
+ALGORITHM DeleteKey
+    IF head = NULL THEN
+        OUTPUT "List is empty"
+        RETURN
     END IF
-    FREE current
-    RETURN head
+
+    READ key
+    ptr ← head
+    WHILE ptr ≠ NULL AND ptr.data ≠ key
+        ptr ← ptr.rlink
+    END WHILE
+    IF ptr = NULL THEN
+        OUTPUT "Search fails: key not found"
+        RETURN
+    END IF
+
+    OUTPUT ptr.data, "is deleted"
+    IF ptr.llink ≠ NULL THEN
+        ptr.llink.rlink ← ptr.rlink
+    ELSE
+        head ← ptr.rlink
+    END IF
+    IF ptr.rlink ≠ NULL THEN
+        ptr.rlink.llink ← ptr.llink
+    END IF
+    FREE ptr
+
+    OUTPUT "The current status is:"
+    CALL Display
 END ALGORITHM
 ~~~
 
 ## DISPLAY FORWARD
 
 ~~~text
-ALGORITHM DisplayForward(head)
-    current ← head
-    WHILE current ≠ NULL
-        OUTPUT current.data
-        current ← current.next
-    END WHILE
-END ALGORITHM
-~~~
-
-## DISPLAY BACKWARD
-
-~~~text
-ALGORITHM DisplayBackward(head)
+ALGORITHM Display
     IF head = NULL THEN
+        OUTPUT "List is empty"
         RETURN
     END IF
-    current ← head
-    WHILE current.next ≠ NULL
-        current ← current.next
-    END WHILE
-    WHILE current ≠ NULL
-        OUTPUT current.data
-        current ← current.prev
+
+    ptr ← head
+    WHILE ptr ≠ NULL
+        OUTPUT ptr.data
+        ptr ← ptr.rlink
     END WHILE
 END ALGORITHM
 ~~~
 
-**Time:** Traversal/search O(n); insertion at beginning O(1).
+## DISPLAY REVERSE
+
+~~~text
+ALGORITHM Display1
+    IF head = NULL THEN
+        OUTPUT "List is empty"
+        RETURN
+    END IF
+
+    ptr ← head
+    WHILE ptr.rlink ≠ NULL          // move to the last node
+        ptr ← ptr.rlink
+    END WHILE
+
+    WHILE ptr ≠ NULL                // traverse backward
+        OUTPUT ptr.data
+        ptr ← ptr.llink
+    END WHILE
+END ALGORITHM
+~~~
+
+**Time:** Traversal/search O(n); insertion/deletion at the beginning O(1).
 
 ## C implementation
 

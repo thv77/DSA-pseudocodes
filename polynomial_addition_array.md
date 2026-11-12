@@ -1,34 +1,32 @@
 # Pseudocode: Polynomial Addition Using Arrays
 
-Each array index represents a power of x; index i stores the coefficient of x^i. The arrays can have different lengths.
+Both polynomials have the same highest order n. Each array holds n + 1 coefficients, written from the highest power down to the constant term, so index k holds the coefficient of x^(n - k).
 
 ~~~text
-ALGORITHM AddPolynomialsUsingArrays(P, m, Q, n)
-    size ← MAX(m, n)
-    CREATE array R[0 ... size - 1]
+ALGORITHM AddPolynomialsUsingArrays
+    READ n
+    READ a[0 ... n]          // first polynomial, highest power first
+    READ b[0 ... n]          // second polynomial, highest power first
 
-    FOR i ← 0 TO size - 1
-        coefficientP ← 0
-        coefficientQ ← 0
-
-        IF i < m THEN
-            coefficientP ← P[i]
-        END IF
-        IF i < n THEN
-            coefficientQ ← Q[i]
-        END IF
-
-        R[i] ← coefficientP + coefficientQ
+    FOR k ← 0 TO n
+        c[k] ← a[k] + b[k]
     END FOR
 
-    OUTPUT R as a polynomial from highest power to lowest
-    RETURN R
+    OUTPUT "The resultant polynomial is"
+    FOR k ← 0 TO n
+        IF c[k] ≠ 0 THEN
+            OUTPUT c[k] "x^" (n - k)
+        END IF
+        IF k < n THEN
+            OUTPUT "+"
+        END IF
+    END FOR
 END ALGORITHM
 ~~~
 
-Do not display terms whose resulting coefficient is zero.
+Terms whose resulting coefficient is zero are not displayed.
 
-**Time:** O(max(m, n)). **Space:** O(max(m, n)) for the result.
+**Time:** O(n). **Space:** O(n).
 
 ## C implementation
 

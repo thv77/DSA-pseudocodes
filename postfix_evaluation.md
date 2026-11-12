@@ -1,46 +1,34 @@
 # Pseudocode: Postfix Expression Evaluation
 
-Use a stack to evaluate postfix expressions. Assume single-digit operands and operators +, -, *, and /.
+Uses an integer stack. The expression contains single-digit operands and the operators +, -, *, and /.
 
 ~~~text
-ALGORITHM EvaluatePostfix(expression)
-    CREATE empty stack S
+ALGORITHM EvaluatePostfix
+    top ← -1
+    READ postfix
 
-    FOR each token x from left to right
-        IF x is an operand THEN
-            PUSH numeric value of x ONTO S
-        ELSE IF x is an operator THEN
-            IF SIZE(S) < 2 THEN
-                OUTPUT "Invalid postfix expression"
-                RETURN ERROR
+    FOR i ← 0 TO LENGTH(postfix) - 1
+        IF postfix[i] is a digit THEN
+            PUSH(postfix[i] - '0')             // numeric value of the digit
+        ELSE                                   // operator
+            b ← POP()                          // right operand
+            a ← POP()                          // left operand
+
+            IF postfix[i] = '+' THEN
+                result ← a + b
+            ELSE IF postfix[i] = '-' THEN
+                result ← a - b
+            ELSE IF postfix[i] = '*' THEN
+                result ← a * b
+            ELSE IF postfix[i] = '/' THEN
+                result ← a / b
             END IF
 
-            right ← POP(S)
-            left ← POP(S)
-
-            IF x = '+' THEN
-                result ← left + right
-            ELSE IF x = '-' THEN
-                result ← left - right
-            ELSE IF x = '*' THEN
-                result ← left * right
-            ELSE IF x = '/' THEN
-                IF right = 0 THEN
-                    OUTPUT "Division by zero"
-                    RETURN ERROR
-                END IF
-                result ← left / right
-            END IF
-
-            PUSH result ONTO S
+            PUSH(result)
         END IF
     END FOR
 
-    IF SIZE(S) ≠ 1 THEN
-        OUTPUT "Invalid postfix expression"
-        RETURN ERROR
-    END IF
-    RETURN POP(S)
+    OUTPUT "Result =", POP()
 END ALGORITHM
 ~~~
 

@@ -1,148 +1,195 @@
 # Pseudocode: Singly Linked List Operations
 
-Each node contains data and a next link. Initialize head ← NULL.
+Each node contains `data` and a `link` to the next node. The list starts empty (`head ← NULL`). A menu is repeated until the user chooses Exit, and the list is displayed after every insertion or deletion.
+
+## MAIN MENU
+
+~~~text
+ALGORITHM LinkedListMenu
+    head ← NULL
+    OUTPUT "1.Insert at first  2.Insert at last  3.Insert after a key"
+    OUTPUT "4.Delete from the front  5.Delete from the end  6.Delete a key"
+    OUTPUT "7.Display  8.Exit"
+
+    REPEAT
+        READ n
+
+        IF n = 1 THEN CALL InsertFirst
+        ELSE IF n = 2 THEN CALL InsertLast
+        ELSE IF n = 3 THEN CALL InsertKey
+        ELSE IF n = 4 THEN CALL DeleteFirst
+        ELSE IF n = 5 THEN CALL DeleteLast
+        ELSE IF n = 6 THEN CALL DeleteKey
+        ELSE IF n = 7 THEN CALL Display
+        ELSE IF n = 8 THEN
+            OUTPUT "Have a nice day"
+            EXIT PROGRAM
+        ELSE
+            OUTPUT "Invalid operation"
+        END IF
+    UNTIL n = 8
+END ALGORITHM
+~~~
 
 ## INSERT AT BEGINNING
 
 ~~~text
-ALGORITHM InsertFront(head, value)
-    node ← CREATE_NODE(value)
-    IF node = NULL THEN
-        OUTPUT "Allocation failed"
-        RETURN head
+ALGORITHM InsertFirst
+    temp ← CREATE_NODE
+    IF temp = NULL THEN
+        OUTPUT "Memory underflow"
+    ELSE
+        READ item
+        temp.data ← item
+        temp.link ← head
+        head ← temp
+        CALL Display
     END IF
-    node.next ← head
-    head ← node
-    RETURN head
 END ALGORITHM
 ~~~
 
 ## INSERT AT END
 
 ~~~text
-ALGORITHM InsertEnd(head, value)
-    node ← CREATE_NODE(value)
-    IF node = NULL THEN
-        OUTPUT "Allocation failed"
-        RETURN head
+ALGORITHM InsertLast
+    temp ← CREATE_NODE
+    IF temp = NULL THEN
+        OUTPUT "Memory underflow"
+        EXIT PROGRAM
     END IF
-    node.next ← NULL
 
+    READ item
     IF head = NULL THEN
-        RETURN node
+        temp.data ← item
+        temp.link ← head
+        head ← temp
+    ELSE
+        ptr ← head
+        WHILE ptr.link ≠ NULL
+            ptr ← ptr.link
+        END WHILE
+        ptr.link ← temp
+        temp.data ← item
+        temp.link ← NULL
     END IF
-    current ← head
-    WHILE current.next ≠ NULL
-        current ← current.next
-    END WHILE
-    current.next ← node
-    RETURN head
+    CALL Display
 END ALGORITHM
 ~~~
 
 ## INSERT AFTER A KEY
 
 ~~~text
-ALGORITHM InsertAfter(head, key, value)
-    current ← head
-    WHILE current ≠ NULL AND current.data ≠ key
-        current ← current.next
-    END WHILE
-    IF current = NULL THEN
-        OUTPUT "Key not found"
-        RETURN head
+ALGORITHM InsertKey
+    temp ← CREATE_NODE
+    IF temp = NULL THEN
+        OUTPUT "Memory underflow"
+        EXIT PROGRAM
     END IF
 
-    node ← CREATE_NODE(value)
-    IF node = NULL THEN
-        OUTPUT "Allocation failed"
-        RETURN head
+    READ item
+    READ key
+
+    ptr ← head
+    WHILE ptr ≠ NULL AND ptr.data ≠ key
+        ptr ← ptr.link
+    END WHILE
+
+    IF ptr = NULL THEN
+        OUTPUT "Search fails"
+    ELSE
+        temp.data ← item
+        temp.link ← ptr.link
+        ptr.link ← temp
     END IF
-    node.next ← current.next
-    current.next ← node
-    RETURN head
+    CALL Display
 END ALGORITHM
 ~~~
 
-## DELETE FROM BEGINNING
+## DELETE FROM FRONT
 
 ~~~text
-ALGORITHM DeleteFront(head)
+ALGORITHM DeleteFirst
     IF head = NULL THEN
-        OUTPUT "List is empty"
-        RETURN head
+        OUTPUT "The list is empty"
+        EXIT PROGRAM
     END IF
-    temp ← head
-    head ← head.next
-    FREE temp
-    RETURN head
+
+    OUTPUT head.data, "is deleted"
+    prev ← head
+    head ← head.link
+    FREE prev
+    CALL Display
 END ALGORITHM
 ~~~
 
 ## DELETE FROM END
 
 ~~~text
-ALGORITHM DeleteEnd(head)
+ALGORITHM DeleteLast
     IF head = NULL THEN
-        OUTPUT "List is empty"
-        RETURN head
-    END IF
-    IF head.next = NULL THEN
-        FREE head
-        RETURN NULL
+        OUTPUT "The list is empty"
+        EXIT PROGRAM
     END IF
 
+    prev ← head
     current ← head
-    WHILE current.next.next ≠ NULL
-        current ← current.next
+    WHILE current.link ≠ NULL
+        prev ← current
+        current ← current.link
     END WHILE
-    FREE current.next
-    current.next ← NULL
-    RETURN head
+
+    prev.link ← NULL
+    OUTPUT current.data, "is deleted"
+    FREE current
+    CALL Display
 END ALGORITHM
 ~~~
 
-## DELETE BY KEY
+## DELETE A KEY
 
 ~~~text
-ALGORITHM DeleteKey(head, key)
+ALGORITHM DeleteKey
     IF head = NULL THEN
-        OUTPUT "List is empty"
-        RETURN head
-    END IF
-    IF head.data = key THEN
-        temp ← head
-        head ← head.next
-        FREE temp
-        RETURN head
+        OUTPUT "The list is empty"
+        EXIT PROGRAM
     END IF
 
-    previous ← head
-    current ← head.next
+    READ key
+    prev ← head
+    current ← head
     WHILE current ≠ NULL AND current.data ≠ key
-        previous ← current
-        current ← current.next
+        prev ← current
+        current ← current.link
     END WHILE
-    IF current = NULL THEN
-        OUTPUT "Key not found"
-        RETURN head
-    END IF
 
-    previous.next ← current.next
-    FREE current
-    RETURN head
+    IF current = NULL THEN
+        OUTPUT "Search fails"
+    ELSE
+        OUTPUT current.data, "is deleted"
+        IF current = head THEN
+            head ← current.link
+        ELSE
+            prev.link ← current.link
+        END IF
+        FREE current
+    END IF
+    CALL Display
 END ALGORITHM
 ~~~
 
 ## DISPLAY
 
 ~~~text
-ALGORITHM DisplayList(head)
-    current ← head
-    WHILE current ≠ NULL
-        OUTPUT current.data
-        current ← current.next
-    END WHILE
+ALGORITHM Display
+    IF head = NULL THEN
+        OUTPUT "the list is empty"
+    ELSE
+        ptr ← head
+        WHILE ptr ≠ NULL
+            OUTPUT ptr.data
+            ptr ← ptr.link
+        END WHILE
+    END IF
 END ALGORITHM
 ~~~
 

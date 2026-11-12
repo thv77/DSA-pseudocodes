@@ -1,29 +1,49 @@
 # Pseudocode: Breadth-First Search (BFS)
 
-BFS visits graph vertices level by level using a queue. G is an adjacency matrix; vertices are numbered from 0 to V - 1.
+BFS visits graph vertices level by level using a queue. The graph is read as an adjacency matrix `adj` (1 means an edge); vertices are numbered from 0 to vertices - 1, with at most MAX (10) vertices.
 
 ~~~text
-ALGORITHM BFS(G, V, start)
-    CREATE visited[0 ... V - 1], initialized to FALSE
-    CREATE empty queue Q
-    visited[start] ← TRUE
-    ENQUEUE(Q, start)
+ALGORITHM BFS
+    front ← 0
+    rear ← -1
+    visited[0 ... MAX - 1] ← 0
 
-    WHILE Q is not empty
-        u ← DEQUEUE(Q)
-        OUTPUT u
+    READ vertices
+    IF vertices < 1 OR vertices > MAX THEN
+        OUTPUT "Invalid number of vertices"
+        STOP
+    END IF
 
-        FOR v ← 0 TO V - 1
-            IF G[u][v] ≠ 0 AND visited[v] = FALSE THEN
-                visited[v] ← TRUE
-                ENQUEUE(Q, v)
+    READ adj[vertices][vertices]
+
+    READ start
+    IF start < 0 OR start ≥ vertices THEN
+        OUTPUT "Invalid starting vertex"
+        STOP
+    END IF
+
+    rear ← rear + 1
+    queue[rear] ← start
+    visited[start] ← 1
+
+    OUTPUT "BFS:"
+    WHILE front ≤ rear
+        current ← queue[front]
+        front ← front + 1
+        OUTPUT current
+
+        FOR i ← 0 TO vertices - 1
+            IF adj[current][i] = 1 AND visited[i] = 0 THEN
+                rear ← rear + 1
+                queue[rear] ← i
+                visited[i] ← 1
             END IF
         END FOR
     END WHILE
 END ALGORITHM
 ~~~
 
-This visits only vertices reachable from start. To traverse a disconnected graph, start BFS again at each unvisited vertex.
+This visits only vertices reachable from the start vertex.
 
 **Time:** O(V²) with an adjacency matrix. **Extra space:** O(V).
 

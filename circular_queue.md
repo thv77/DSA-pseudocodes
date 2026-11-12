@@ -1,69 +1,89 @@
 # Pseudocode: Circular Queue Using an Array
 
-A circular queue reuses array positions by wrapping indices around. Initialize front ← -1 and rear ← -1; array capacity is MAX.
+A circular queue reuses array positions by wrapping indices around with the modulo operator. The program keeps an array `queue` of capacity maxsize (3) with `front ← -1` and `rear ← -1`, and repeats a menu until the user chooses EXIT.
+
+## MAIN MENU
+
+~~~text
+ALGORITHM CircularQueueMenu
+    front ← -1
+    rear ← -1
+    REPEAT
+        OUTPUT "1.ENTER  2.DELETE  3.DISPLAY  4.EXIT"
+        READ n
+
+        IF n = 1 THEN
+            CALL Enqueue
+        ELSE IF n = 2 THEN
+            CALL Dequeue
+        ELSE IF n = 3 THEN
+            CALL Display
+        ELSE IF n = 4 THEN
+            EXIT PROGRAM
+        ELSE
+            OUTPUT "Invalid choice"
+        END IF
+    UNTIL n = 4
+END ALGORITHM
+~~~
 
 ## ENQUEUE
 
 ~~~text
-ALGORITHM CircularEnqueue(queue, front, rear, MAX, item)
-    IF (rear + 1) MOD MAX = front THEN
-        OUTPUT "Queue Overflow"
-        RETURN (front, rear)
-    END IF
-
-    IF front = -1 THEN
+ALGORITHM Enqueue
+    READ item
+    IF front = (rear + 1) MOD maxsize THEN
+        OUTPUT "queue overflow"
+    ELSE IF front = -1 AND rear = -1 THEN
         front ← 0
         rear ← 0
+        queue[rear] ← item
     ELSE
-        rear ← (rear + 1) MOD MAX
+        rear ← (rear + 1) MOD maxsize
+        queue[rear] ← item
     END IF
-
-    queue[rear] ← item
-    RETURN (front, rear)
 END ALGORITHM
 ~~~
 
 ## DEQUEUE
 
 ~~~text
-ALGORITHM CircularDequeue(queue, front, rear, MAX)
-    IF front = -1 THEN
-        OUTPUT "Queue Underflow"
-        RETURN (front, rear, EMPTY)
-    END IF
-
-    item ← queue[front]
-    IF front = rear THEN
+ALGORITHM Dequeue
+    IF rear = -1 AND front = -1 THEN
+        OUTPUT "queue underflow"
+    ELSE IF rear = front THEN
+        data ← queue[front]
         front ← -1
         rear ← -1
     ELSE
-        front ← (front + 1) MOD MAX
+        data ← queue[front]
+        front ← (front + 1) MOD maxsize
+        OUTPUT "one element is successfully deleted"
     END IF
-    RETURN (front, rear, item)
 END ALGORITHM
 ~~~
 
 ## DISPLAY
 
+Visit every position from `front` to `rear`, wrapping around the end of the array.
+
 ~~~text
-ALGORITHM DisplayCircularQueue(queue, front, rear, MAX)
+ALGORITHM Display
     IF front = -1 THEN
         OUTPUT "Queue is empty"
         RETURN
     END IF
 
     i ← front
-    REPEAT
+    WHILE i ≠ rear
         OUTPUT queue[i]
-        IF i = rear THEN
-            BREAK
-        END IF
-        i ← (i + 1) MOD MAX
-    UNTIL FALSE
+        i ← (i + 1) MOD maxsize
+    END WHILE
+    OUTPUT queue[rear]
 END ALGORITHM
 ~~~
 
-**Time:** Enqueue O(1), Dequeue O(1), Display O(n). **Space:** O(MAX).
+**Time:** Enqueue O(1), Dequeue O(1), Display O(n). **Space:** O(maxsize).
 
 ## C implementation
 
